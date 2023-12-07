@@ -18,8 +18,6 @@ const productListSlice = createSlice({
   },
 });
 
-console.log(productListSlice);
-
 export function fetchProducts() {
   return async function (dispatch, getState) {
     const res = await fetch("https://fakestoreapi.com/products");
