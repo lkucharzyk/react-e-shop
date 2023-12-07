@@ -1,22 +1,33 @@
 import { useDispatch, useSelector } from "react-redux";
 import ProductListItem from "./ProductListItem";
-import { fetchProducts } from "./productListSlice";
+import { fetchCategories, fetchProducts } from "./productListSlice";
 import { useEffect } from "react";
+import ProductListMenu from "./ProductListMenu";
 
 function ProductsList() {
   const dispatch = useDispatch();
 
+  const products = useSelector((store) => store.productList.products);
+  const activeCategory = useSelector(
+    (store) => store.productList.activeCategory
+  );
+
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
-  const products = useSelector((store) => store.productList.products);
+  useEffect(() => {
+    dispatch(fetchProducts(activeCategory));
+  }, [dispatch, activeCategory]);
 
   return (
     <section>
-      {products.map((product) => (
-        <ProductListItem key={product.id} product={product} />
-      ))}
+      <ProductListMenu />
+      <div>
+        {products.map((product) => (
+          <ProductListItem key={product.id} product={product} />
+        ))}
+      </div>
     </section>
   );
 }
